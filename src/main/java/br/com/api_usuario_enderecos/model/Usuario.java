@@ -2,16 +2,20 @@ package br.com.api_usuario_enderecos.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.PastOrPresent;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cpf", "email"}))
 public class Usuario {
 
 	@Id
@@ -36,7 +41,7 @@ public class Usuario {
 	@Size(max = 100, message = "O email deve possuir no máximo 100 caracteres!")
 	private String email;
 	
-	@CPF(message = "CPF invalido!")
+	@CPF(message = "CPF inválido!")
 	@NotNull(message = "Informe um CPF!")
 	private String cpf;
 	

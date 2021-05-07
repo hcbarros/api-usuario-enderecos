@@ -10,4 +10,7 @@ import br.com.api_usuario_enderecos.model.Usuario;
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Long>  {
 
+	boolean existsByCpf(String cpf);
+	
+	boolean existsByEmail(String email);
 }
