@@ -19,6 +19,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.api_usuario_enderecos.controller.response.ResponseError;
+import br.com.api_usuario_enderecos.exceptions.CpfExistenteException;
+import br.com.api_usuario_enderecos.exceptions.EmailExistenteException;
 
 
 @ControllerAdvice
@@ -38,34 +40,23 @@ public class GlobalExceptionConfiguration extends ResponseEntityExceptionHandler
 		return ResponseEntity.badRequest().body(new ResponseError(errors));
 	}
 	
-	@Override
-	protected ResponseEntity<Object> handleMissingServletRequestParameter(
-	  MissingServletRequestParameterException ex, HttpHeaders headers, 
-	  HttpStatus status, WebRequest request) {
-	    String error = "O parâmetro " + ex.getParameterName() + " está ausente!";
-	   
-	    return ResponseEntity.badRequest()
-	    					 .body(new ResponseError(ex.getLocalizedMessage(), error));
+	
+	@ExceptionHandler({ CpfExistenteException.class, 
+						EmailExistenteException.class })
+	public ResponseEntity<Object> handleExistsPropertyException (
+			RuntimeException ex, WebRequest request) {
+	    
+	    return handleExceptionInternal(ex, ex.getMessage(), 
+		          new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
 	
-	@ExceptionHandler({ RuntimeException.class })
-	public ResponseEntity<Object> handleCadastroException (
-			RuntimeException ex, WebRequest request) {
-	    List<String> errors = new ArrayList<String>();
-	    
-	    errors.add(ex.getMessage());
-
-		return ResponseEntity.badRequest().body(new ResponseError(errors));
-	}
 	
 	@ExceptionHandler({ EntityNotFoundException.class })
-	public ResponseEntity<Object> handleEntityException (
+	public ResponseEntity<Object> handleEntityNotFoundException (
 			EntityNotFoundException ex, WebRequest request) {
-	    List<String> errors = new ArrayList<String>();
-	    
-	    errors.add("Entidade não encontrada!");
 
-		return ResponseEntity.badRequest().body(new ResponseError(errors));
+		return handleExceptionInternal(ex, "Entidade não encontrada!", 
+		          new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
 		
 	

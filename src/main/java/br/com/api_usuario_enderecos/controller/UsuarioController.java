@@ -17,28 +17,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.api_usuario_enderecos.model.Endereco;
 import br.com.api_usuario_enderecos.model.Usuario;
-import br.com.api_usuario_enderecos.service.UsuarioServico;
+import br.com.api_usuario_enderecos.service.ApiServico;
 
 
 @RestController
 @Validated
-@RequestMapping("/usuario")
+@RequestMapping("/api")
 public class UsuarioController  {
 
 	@Autowired
-	private UsuarioServico servico;
+	private ApiServico servico;
 	
 	
-	@GetMapping(value = "{id}")
+	@GetMapping(value = "/usuario/{id}")
 	public Usuario buscarUsuario(@PathVariable Long id) {
 		return servico.buscarPorId(id);		
 	}
 	
-	@PostMapping
+	@PostMapping(value = "/usuario")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario salvar(@RequestBody @Valid Usuario usuario) {
-		return servico.salvar(usuario);
+	public Usuario salvarUsuario(@RequestBody @Valid Usuario usuario) {
+		return servico.salvarUsuario(usuario);
+	}
+	
+	@PostMapping(value = "/endereco")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Endereco salvarEndereco(@RequestBody @Valid Endereco endereco) {
+		return servico.salvarEndereco(endereco);
 	}
 		
 }

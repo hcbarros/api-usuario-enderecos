@@ -1,12 +1,16 @@
 package br.com.api_usuario_enderecos.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +27,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cpf", "email"}))
 public class Usuario {
 
 	@Id
@@ -50,6 +53,13 @@ public class Usuario {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@NotNull(message = "Informe a data de nascimento!")
 	private LocalDate data_nasc;
+	
+	@OneToMany(
+	        mappedBy = "usuario",
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true
+	    )
+    private List<Endereco> enderecos = new ArrayList<>();
 	
 		
 	public Usuario() {
@@ -102,6 +112,14 @@ public class Usuario {
 
 	public void setData_nasc(LocalDate data_nasc) {
 		this.data_nasc = data_nasc;
+	}
+	
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+	
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 }
