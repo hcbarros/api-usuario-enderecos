@@ -33,7 +33,6 @@ public class DataLoader {
 			Usuario usuarioSalvo = repoUsuario.save(usuario);
 	
 	
-			
 			Endereco endereco1 = new Endereco("Rua da Hora", 473, "Bloco A", 
 											  "Espinheiro", "Recife", "PE", "52020-015", usuarioSalvo);
 			

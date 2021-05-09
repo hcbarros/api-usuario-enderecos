@@ -15,12 +15,15 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.api_usuario_enderecos.controller.response.ResponseError;
 import br.com.api_usuario_enderecos.exceptions.CpfExistenteException;
 import br.com.api_usuario_enderecos.exceptions.EmailExistenteException;
+import feign.FeignException;
+import feign.FeignException.InternalServerError;
 
 
 @ControllerAdvice
@@ -55,9 +58,17 @@ public class GlobalExceptionConfiguration extends ResponseEntityExceptionHandler
 	public ResponseEntity<Object> handleEntityNotFoundException (
 			EntityNotFoundException ex, WebRequest request) {
 
-		return handleExceptionInternal(ex, "Entidade não encontrada!", 
+		return handleExceptionInternal(ex, ex.getMessage(), 
 		          new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
-		
+	
+	
+	@ExceptionHandler({ FeignException.class })
+	public ResponseEntity<Object> handleFeignClientException (
+			FeignException ex, WebRequest request) {
+
+		return handleExceptionInternal(ex, "CEP inválido!", 
+		          new HttpHeaders(), HttpStatus.CONFLICT, request);
+	}
 	
 }

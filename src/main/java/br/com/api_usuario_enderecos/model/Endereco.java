@@ -1,12 +1,15 @@
 package br.com.api_usuario_enderecos.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class Endereco {
@@ -32,10 +35,12 @@ public class Endereco {
 	@NotNull(message = "Informe o Estado!")
 	private String uf;
 	
+	@Pattern(regexp = "\\d{5}-\\d{3}", message = "CEP invalido!")
 	@NotNull(message = "Informe o CEP!")
 	private String cep;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
     private Usuario usuario;
 	
 	
@@ -44,8 +49,7 @@ public class Endereco {
 	}
 
 	public Endereco(String logradouro, Integer numero, String complemento, 
-					String bairro, String localidade, String uf, 
-					String cep, Usuario usuario) {
+					String bairro, String localidade, String uf, String cep, Usuario usuario ) {
 
 		this.logradouro = logradouro;
 		this.numero = numero;
@@ -135,6 +139,11 @@ public class Endereco {
 
 	public void setCep(String cep) {
 		this.cep = cep;
+	}
+	
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 }

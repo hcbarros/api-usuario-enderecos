@@ -39,9 +39,26 @@ public class ApiServico {
 		return repoEndereco.save(endereco);
 	}	
 	
+	public Endereco salvarEnderecoViaCEP(Endereco viaCEP, Endereco body) {
+		
+		if(viaCEP != null) {
+        	if(viaCEP.getCep() == null) 
+        		throw new EntityNotFoundException("CEP não encontrado!");
+        	
+        	body.setLogradouro(viaCEP.getLogradouro());
+        	body.setBairro(viaCEP.getBairro());
+        	body.setLocalidade(viaCEP.getLocalidade());
+        	body.setUf(viaCEP.getUf());
+        	body.setCep(viaCEP.getCep());
+        }
+		
+		return repoEndereco.save(body);
+	}	
+	
 	public Usuario buscarPorId(Long id) {
 		return repoUsuario.findById(id)
-				   .orElseThrow(() -> new EntityNotFoundException());
+				   .orElseThrow(() -> 
+				   new EntityNotFoundException("Usuário não encontrado!"));
 	}
 
 }

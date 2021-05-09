@@ -31,7 +31,7 @@ public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
-	private Long id;
+	private Long usuario_id;
 	
 	@NotNull(message = "O nome não deve ser nulo!")
 	@NotBlank(message = "O nome não deve estar em branco!")
@@ -54,11 +54,7 @@ public class Usuario {
 	@NotNull(message = "Informe a data de nascimento!")
 	private LocalDate data_nasc;
 	
-	@OneToMany(
-	        mappedBy = "usuario",
-	        cascade = CascadeType.ALL,
-	        orphanRemoval = true
-	    )
+	@OneToMany(mappedBy = "usuario")
     private List<Endereco> enderecos = new ArrayList<>();
 	
 		
@@ -74,12 +70,12 @@ public class Usuario {
 	}
 	
 
-	public Long getId() {
-		return id;
+	public Long getUsuario_id() {
+		return usuario_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUsuario_id(Long usuario_id) {
+		this.usuario_id = usuario_id;
 	}
 
 	public String getNome() {
