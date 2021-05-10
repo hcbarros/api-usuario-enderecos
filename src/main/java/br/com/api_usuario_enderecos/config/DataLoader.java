@@ -19,7 +19,6 @@ import br.com.api_usuario_enderecos.repository.UsuarioRepositorio;
 @Profile("prod")
 public class DataLoader {
 	
-	
 	@Bean
 	CommandLineRunner baseLoad(UsuarioRepositorio repoUsuario, 
 							   EnderecoRepositorio repoEndereco) {
