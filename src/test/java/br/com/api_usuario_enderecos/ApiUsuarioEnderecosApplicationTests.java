@@ -42,7 +42,8 @@ class ApiUsuarioEnderecosApplicationTests {
 	@Order(1)
 	public void deveRetornarStatus200EUmaListadeEnderecos() {
 	
-		ResponseEntity<Usuario> resp = getUsuario(1);
+		ResponseEntity<Usuario> resp = this.restTemplate
+				.getForEntity("http://localhost:" + port + "/api/usuario/1", Usuario.class);
 	
 		assertEquals(resp.getStatusCodeValue(), 200);
 		assertEquals(resp.getBody().getEnderecos().size(), 2);
@@ -68,7 +69,8 @@ class ApiUsuarioEnderecosApplicationTests {
 		Usuario usuarioResponse = this.restTemplate
 				.postForEntity("http://localhost:" + port + "/api/usuario", usuario, Usuario.class).getBody();
 		
-		ResponseEntity<Usuario> resp = getUsuario(usuarioResponse.getUsuario_id().longValue());
+		ResponseEntity<Usuario> resp = this.restTemplate
+				.getForEntity("http://localhost:" + port + "/api/usuario/"+usuarioResponse.getUsuario_id(), Usuario.class);
 	
 		assertEquals(resp.getBody().getCpf(), "001.930.040-97");
 	}
@@ -77,7 +79,8 @@ class ApiUsuarioEnderecosApplicationTests {
 	@Order(4)
 	public void deveSalvarEndereco() {
 	
-		Usuario usuario = getUsuario(1).getBody();
+		Usuario usuario = this.restTemplate
+				.getForEntity("http://localhost:" + port + "/api/usuario/1", Usuario.class).getBody();
 		
 		Endereco enderecoAntes = new Endereco("Rua das Graças", 377, "Apt 101", 
 				  "Graças", "Recife", "PE", "52011-200", usuario);
@@ -88,24 +91,6 @@ class ApiUsuarioEnderecosApplicationTests {
 	
 		assertNotEquals(enderecoAntes.getId(), 
 						enderecoDepois.getId());
-	}
-	
-	@Test
-	@Order(5)
-	public void deveSalvarEnderecoUsandoApiViaCEP() {
-		
-		Endereco endereco = this.restTemplate
-		.getForEntity("http://localhost:" + port + "/api/cep/52021140", 
-				Endereco.class).getBody();
-		
-		System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"+endereco.getId());
-	}
-	
-	
-	private ResponseEntity<Usuario> getUsuario(long id) {
-		
-		return this.restTemplate
-				.getForEntity("http://localhost:" + port + "/api/usuario/"+id, Usuario.class);
 	}
 
 }
