@@ -39,7 +39,7 @@ public class ApiController  {
 	}
 	
 	@GetMapping("/cep/{cep}")
-    public Endereco getCep(@PathVariable String cep, 
+    public Endereco buscarEnderecoViaCep(@PathVariable String cep, 
     					   @RequestBody Endereco body) {
 
         Endereco viaCEP = cepServico.buscaEnderecoPorCep(cep);

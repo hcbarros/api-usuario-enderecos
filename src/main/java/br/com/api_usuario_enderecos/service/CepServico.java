@@ -11,4 +11,4 @@ public interface CepServico {
 
     @GetMapping("{cep}/json")
     Endereco buscaEnderecoPorCep(@PathVariable("cep") String cep);
-}
+}	

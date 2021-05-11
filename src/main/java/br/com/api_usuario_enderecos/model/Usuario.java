@@ -4,22 +4,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.PastOrPresent;
 
-import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -49,7 +44,7 @@ public class Usuario {
 	private String cpf;
 	
 	@PastOrPresent(message = "Informe uma data atual ou do passado!")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) //iso = DateTimeFormat.ISO.DATE
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@NotNull(message = "Informe a data de nascimento!")
 	private LocalDate data_nasc;
